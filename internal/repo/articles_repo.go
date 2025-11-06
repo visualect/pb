@@ -11,11 +11,17 @@ import (
 	"github.com/visualect/pb/internal/models"
 )
 
+// CreateArticleRequest represents fields for creating new article
+//
+//	@Description	Creat article structure
 type CreateArticleRequest struct {
 	Title string `json:"title"`
 	Body  string `json:"body"`
 }
 
+// UpdateArticleRequest represents updates to an article
+//
+//	@Description	Partial article update structure
 type UpdateArticleRequest struct {
 	Title *string `json:"title"`
 	Body  *string `json:"body"`

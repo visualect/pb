@@ -17,6 +17,16 @@ func New(repo repo.ArticlesRepository) *ArticlesHandler {
 	return &ArticlesHandler{repo}
 }
 
+// GetArticles gets a list of all articles
+//
+//	@Summary		List all articles
+//	@Description	Get all articlesGet all articles
+//	@Tags			articles
+//	@Produce		json
+//	@Success		200	{array}		models.Article
+//	@Failure		400	{string}	string	"Bad Request"
+//	@Failure		500	{string}	string	"Internal Server Error"
+//	@Router			/v1/articles [get]
 func (a *ArticlesHandler) GetArticles(w http.ResponseWriter, r *http.Request) {
 	articles, err := a.repo.GetArticles(r.Context())
 	if err != nil {
@@ -33,6 +43,17 @@ func (a *ArticlesHandler) GetArticles(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetArticle get an article by ID
+//
+//	@Summary		Get article by ID
+//	@Description	Get article by his ID
+//	@Tags			articles
+//	@Param			id	path	string	true	"Article ID"
+//	@Produce		json
+//	@Success		200	{object}	models.Article
+//	@Failure		400	{string}	string	"Bad Request"
+//	@Failure		500	{string}	string	"Internal Server Error"
+//	@Router			/v1/articles/{id} [get]
 func (a *ArticlesHandler) GetArticle(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
@@ -53,6 +74,19 @@ func (a *ArticlesHandler) GetArticle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CreateArticle creates a new article
+//
+//	@Summary		Create a new article
+//	@Description	Create a new article with the provided data
+//	@Tags			articles
+//	@Accept			json
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Success		201	{object}	models.Article
+//	@Failure		400	{string}	string	"Bad Request"
+//	@Failure		403	{string}	string	"Forbidden"
+//	@Failure		500	{string}	string	"Internal Server Error"
+//	@Router			/v1/articles [post]
 func (a *ArticlesHandler) CreateArticle(w http.ResponseWriter, r *http.Request) {
 	var b repo.CreateArticleRequest
 	err := json.NewDecoder(r.Body).Decode(&b)
@@ -86,6 +120,19 @@ func (a *ArticlesHandler) CreateArticle(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// DeleteArticle deletes an article by ID
+//
+//	@Summary		Delete article by ID
+//	@Description	Delete article by his ID
+//	@Tags			articles
+//	@Param			id	path	string	true	"Article ID"
+//	@Produce		json
+//	@Security		BearerAuth
+//	@Success		204	{string}	string	"No Content"
+//	@Failure		400	{string}	string	"Bad Request"
+//	@Failure		403	{string}	string	"Forbidden"
+//	@Failure		500	{string}	string	"Internal Server Error"
+//	@Router			/v1/articles/{id} [delete]
 func (a *ArticlesHandler) DeleteArticle(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
@@ -101,6 +148,19 @@ func (a *ArticlesHandler) DeleteArticle(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// UpdateArticle updated an article by ID
+//
+//	@Summary		Partial update article by ID
+//	@Description	Partial update article by his ID
+//	@Tags			articles
+//	@Param			id	path	string	true	"Article ID"
+//	@Accept			json
+//	@Produce		json
+//	@Success		204	{string}	string	"No Content"
+//	@Failure		400	{string}	string	"Bad Request"
+//	@Failure		403	{string}	string	"Forbidden"
+//	@Failure		500	{string}	string	"Internal Server Error"
+//	@Router			/v1/articles/{id} [patch]
 func (a *ArticlesHandler) UpdateArticle(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
