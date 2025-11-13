@@ -10,7 +10,7 @@
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host		localhost:8000
+// @host		localhost:8080
 // @BasePath	/swagger/*
 package main
 
@@ -43,7 +43,7 @@ func main() {
 	defer dbpool.Close()
 
 	if err := dbpool.Ping(context.Background()); err != nil {
-		log.Fatalf("failed to conect to databse: %s\n", err)
+		log.Fatalf("failed to conect to database: %s\n", err)
 	} else {
 		log.Println("successfully connected to database")
 	}
@@ -57,7 +57,7 @@ func main() {
 	mux.HandleFunc("POST /v1/articles", middleware.AuthRequired(h.CreateArticle))
 	mux.HandleFunc("DELETE /v1/articles/{id}", middleware.AuthRequired(h.DeleteArticle))
 	mux.HandleFunc("PATCH /v1/articles/{id}", middleware.AuthRequired(h.UpdateArticle))
-	mux.HandleFunc("GET /swagger/", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/swagger/doc.json")))
+	mux.HandleFunc("GET /swagger/", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/swagger/doc.json")))
 
 	c := cors.New(cors.Options{
 		AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodPatch},
@@ -66,6 +66,6 @@ func main() {
 	})
 	handler := c.Handler(mux)
 
-	log.Println("running on http://localhost:8000")
-	log.Fatal(http.ListenAndServe(":8000", handler))
+	log.Println("running on http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }

@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:18
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pb
+      PGDATA: /vol
+    ports:
+      - "5433:5432"
+    volumes:
+      - articles:/vol
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+      
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  migrate:
+    build: .
+    command: goose up
+    depends_on:
+      backend:
+        condition: service_started
+volumes:
+  articles:
