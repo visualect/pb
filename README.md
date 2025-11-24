@@ -6,7 +6,7 @@ It uses *postgresql*, *pgx*, *standard library* and *goose* for migrations.
 ## Run with docker compose
 
 ```shell
-git clone https://github.com/visualect/pb
+git clone https://github.com/ochamekan/pb
 cd pb
 cp .env.example .env 
 docker compose up -d
